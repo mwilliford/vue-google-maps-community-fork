@@ -76,6 +76,7 @@ const events = [
   'resize',
   'rightclick',
   'tilesloaded',
+  'maptypeid_changed',
 ]
 
 // Plain Google Maps methods exposed here for convenience
@@ -138,7 +139,7 @@ export default {
       $mapPromise: this.$mapPromise,
     }
   },
-  emits: ['center_changed', 'zoom_changed', 'bounds_changed'],
+  emits: ['center_changed', 'zoom_changed', 'bounds_changed', 'maptypeid_changed'],
   computed: {
     finalLat() {
       return this.center && typeof this.center.lat === 'function'
@@ -203,6 +204,9 @@ export default {
         })
         this.$mapObject.addListener('bounds_changed', () => {
           this.$emit('bounds_changed', this.$mapObject.getBounds())
+        })
+        this.$mapObject.addListener('maptypeid_changed', () => {
+          this.$emit('maptypeid_changed', this.$mapObject.getMapTypeId()) 
         })
 
         this.$mapPromiseDeferred.resolve(this.$mapObject)
